@@ -72,11 +72,11 @@ describe("public-api-scope", function (){
 
         /*------------ the test functions ---------------*/
         var fun1 = function (name, cb)  {
-            console.log('start fun1');
+            //console.log('start fun1');
             setTimeout(function () {
                 cb([1,2,3,4,5,6,7]);
             }, 3000);
-            console.log('end fun1');
+            //console.log('end fun1');
         };
         var fun2 = function (path)  {
             var _path = path;
@@ -88,11 +88,11 @@ describe("public-api-scope", function (){
             }
         };
         fun2.GoodMorning = function (path, cb)  {
-            console.log('Hello world', path);
+            //console.log('Hello world', path);
             setTimeout(function () {
                 cb('1',2,3.0);
             }, 2000);
-            console.log('Goodbye,', path);
+            //console.log('Goodbye,', path);
         };
         
         /*------------- convert to ascs.func ------------------*/
@@ -124,16 +124,30 @@ describe("public-api-scope", function (){
             is_functor(t5);
 		});
 
-		it("check the ascs.func is valid", function () {
-
-		});		
-
-		it("the non-function should return itself", function () {
-
+		it("the non-function should return null", function () {
+            assert.isNull( ascs.make(undefined), "cannot parse the undefined variant");
+            assert.isNull( ascs.make(null), "cannot parse the null variant");
+            assert.isNull( ascs.make(NaN), "the NaN cannot be parsed");
+            assert.isNull( ascs.make(true), "the boolean cannot be parsed");
+            assert.isNull( ascs.make("100"), "the string cannot be parsed");
+            assert.isNull( ascs.make(100), "the number cannot be parsed");
+            assert.isNull( ascs.make([1,2,3,4,5]), "the array cannot be parsed");
+            assert.isNull( ascs.make({ a : 'abc', b:123 }), "the object cannot be parsed");
 		});
 
 		it("the asc.func object should return itself", function () {
 
+            var f1 = fsExists_async("1.txt");
+            var f2 = fun1_async("2.txt");
+            var f3 = fun2_async("3.txt");
+            var f4 = fun2_s_goodmorning_async("4.txt");
+            var f5 = fun2_m_exists_async();
+
+            assert.equal( ascs.make(f1), f1, "the f1 make nothing different");
+            assert.equal( ascs.make(f2), f2, "the f2 make nothing different");
+            assert.equal( ascs.make(f3), f3, "the f3 make nothing different");
+            assert.equal( ascs.make(f4), f4, "the f4 make nothing different");
+            assert.equal( ascs.make(f5), f5, "the f5 make nothing different");
 		});
 	});
 
