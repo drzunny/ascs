@@ -63,7 +63,7 @@ The result is: { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 }
 current is: 3
 ```
 
-The process will be waiting the task util it has finished;
+The process will be waiting the task until it has finished;
 
 # Roadmap
 - - -
