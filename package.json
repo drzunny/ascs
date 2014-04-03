@@ -1,10 +1,10 @@
 {
   "name": "ascs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "provide the async/await like C# 4.5",
   "main": "ascs.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -R spec"
   },
   "keywords": [
     "async",
@@ -16,5 +16,13 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "fibers": "^1.0.1"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.18.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://yogichung@git.oschina.net/yogichung/ascs.git"
   }
 }
