@@ -1,0 +1,20 @@
+{
+  "name": "ascs",
+  "version": "0.1.0",
+  "description": "provide the async/await like C# 4.5",
+  "main": "ascs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "async",
+    "await",
+    "javascript",
+    "C#"
+  ],
+  "author": "drzunny",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "fibers": "^1.0.1"
+  }
+}
