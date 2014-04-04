@@ -153,17 +153,223 @@ describe("public-api-scope", function (){
 
 	describe("ascs.await", function ()	{
 
+        // ---------- Prepare the test functions -------------------
+        var fs = require("fs");
+
+        var fun1 = function (arr, cb)  {
+            var sum = 0;
+            for (var i = 0; i < arr.length; i++)    {
+                sum += arr[i];
+            }
+            setTimeout(function () { cb(sum); }, 500);
+        };
+
+        var fun2 = function(s1, s2, cb)   {
+            cb(s1+s2);
+        };
+
+        var fun = function () {
+            this.fun3 = function (name, cb) {
+                //console.log("await.test.name = ", name);
+                setTimeout(function () { cb(1,2,3); }, 1000);
+            };
+        };
+
+        fun.fun4 = function (cb) {
+            cb(this);
+        };
+
+        var fun5 = "This is not a function";
+        
+        // ---------- Convert the normal asynchronous function to ascs.func ---------------
+        var F = new fun();
+        
+        var async_f0 = ascs.make(fs.exists);
+        var async_f1 = ascs.make(fun1);
+        var async_f2 = ascs.make(fun2);
+        var async_f3 = ascs.make(F.fun3);
+        var async_f4 = ascs.make(fun.fun4);
+        var async_f5 = ascs.make(fun5);
+
 		it("the await operation can block the env-function", function () {
+            assert.isNull(async_f5, "Test the `null` variant againt, the non-function object cannot be parsed");
+
+            var check_flag = 0;
+
+            ascs.env(function ()    {
+                check_flag = 1;
+                check_flag = 2;
+                ascs.await(async_f0("1.txt"));
+                check_flag = 3;
+            })();
+            assert.equal(check_flag, 2, "this step 1, the check flag must be 2 if the await has block the process<jump out the env>");
+
+            ascs.env(function ()    {
+                check_flag = 10;
+                ascs.await(async_f1([1,2,3,4,5,6,7]));
+                check_flag = 20;
+                check_flag = 30;
+            })();
+            assert.equal(check_flag, 10, "this step 2, the check flag must be 10 if the await has block the process<jump out the env>");
+
+            ascs.env(function ()    {
+                check_flag = 100;
+                check_flag = 200;
+                check_flag = 300;
+                ascs.await(async_f2("Hello", "world")); // this callback will be executed immediately.
+                check_flag = 400;                       // when the 'await' called, the status has changed COMPLETE. `await` canceled
+            })();
+            assert.equal(check_flag, 400, "this step 3, the check flag must be 400 if the await has block the process<jump out the env>");
+
+            ascs.env(function ()    {
+                ascs.await(async_f3("Superhero"));
+                check_flag = 1000;
+                check_flag = 2000;
+                check_flag = 3000;
+            })();
+            assert.equal(check_flag, 400, "this step 4, the check flag must be 400 if the await has block the process<jump out the env>");
+
+            ascs.env(function ()    {
+                check_flag = 10000;
+                check_flag = 20000;
+                ascs.await(async_f4()); // the same of async_f2, the callback will execute immediately
+                check_flag = 30000;
+            })();
+            assert.equal(check_flag, 30000, "this step 5, the check flag must be 30000 if the await has block the process<jump out the env>");
 
 		});
 
-		it("after await, all the result are returned successfuly", function () {
+		it("after await, all the result are returned successfuly", function (done) {    // use mocha's asynchronous supported
+            ascs.env(function () {
+                var result = [];
+                var t1 = async_f0('1.txt');
+                var t2 = async_f1([1,2,3,4,5]);
+                var t3 = async_f2('a', 'b');
+                var t4 = async_f3('txt');
+                var t5 = async_f4();
 
+                result.push(ascs.await(t1))
+                result.push(ascs.await(t2))
+                result.push(ascs.await(t3))
+                result.push(ascs.await(t4))
+                result.push(ascs.await(t5))
+
+                for (var i = 0; i < 5; i++) {
+                    assert.isNotNull(result[i], "the task " + i + " must be returned successfuly");
+                }
+                done();     // end of this test case
+            })();
 		});
 
 		it("if no await operation, the env-function will be execute asynchronous", function () {
+            var flag = [];
+            var i = 1;
+            ascs.env(function() {
+                flag.push(i++);
+                flag.push(i++);
+                async_f0("1.txt");
+                flag.push(i++);
+                flag.push(i++);
+            })();
+            chai.expect(flag).to.eql([1,2,3,4]);
 
+            ascs.env(function() {
+                flag.push(i++);
+                flag.push(i++);
+                flag.push(i++);
+                async_f1([1,2,3,4]);
+                flag.push(i++);
+            })();
+            chai.expect(flag).to.eql([1,2,3,4,5,6,7,8]);
+
+            ascs.env(function() {
+                async_f2('ab', 'cd');
+                flag.push(i++);
+                flag.push(i++);
+                flag.push(i++);
+                flag.push(i++);
+            })();
+            chai.expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12]);
+
+            ascs.env(function() {
+                flag.push(i++);
+                async_f3('ab');
+                flag.push(i++);
+                flag.push(i++);
+                flag.push(i++);
+            })();
+            chai.expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+
+            ascs.env(function() {
+                flag.push(i++);
+                async_f4();
+                flag.push(i++);
+                flag.push(i++);
+                async_f4();
+                flag.push(i++);
+            })();
+            chai.expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]);
 		});
+
+        it("the time-cost between the normal asynchronous callback and ascs.await model", function (done) {
+        		// get fibonacci
+        		function fib(n)	{
+        			var source = [1, 1];
+        			if (n <= 1)
+        				return source[i];
+        			for (var i = 2; i <= n; i++)	{
+        				var next = source[i-2] + source[i-1];
+        				source.push(next);
+        			}
+        			return source[source.length-1];
+        		}
+        		// Test function
+        		function millionFib(cb)	{        			
+        			var r = fib(30);
+        			setTimeout(function () {
+        				cb(r);
+        			}, 5);        			
+        		};
+
+        		/*
+        			--- if the normal asynchronous callback pattern. the test will be:
+
+						t1 = get_here();
+        				millionFib(function (n) {
+							t2 = get_here();
+							// output
+        				});
+        				fib(10); // you can do other things for here because the callback is async
+        		 */
+        		ascs.env(function () {
+	        		var ascs_begin = Date.parse(new Date());
+	        		console.log(ascs_begin);
+	        		var millionFib_async = ascs.make(millionFib);
+
+	        		fib(10); 										// the millionfib_async is asynchronous too!
+	        		var result1 = ascs.await(millionFib_async());	// waiting for callback
+	        		console.log(Date.parse(new Date()));
+	        		var ascs_cost = Date.parse(new Date()) - ascs_begin;
+	        		console.log(result1, ascs_cost);
+
+	        		// normal async callback style
+	        		var normal_begin = Date.parse(new Date());
+	        		console.log(normal_begin);
+	        		millionFib(function (n) {
+	        			console.log(Date.parse(new Date()));
+	        			var normal_cost = Date.parse(new Date()) - normal_begin;
+	        			console.log(n, normal_cost);
+						console.log('\nascs.await cost:%d\nnormal callback cost:%d\n', ascs_cost, normal_cost);
+
+	        			// we allow a little bit extra-time for using ascs.await
+	        			chai.expect(ascs_cost - normal_cost).to.be.below(0.005);
+	        			// finish this asynchronous callback test
+	        			done();
+	        		});
+	        		fib(10);	// the millionfib is async. test for equal condition
+        		})();
+        		
+        });
 
 	});
 })
