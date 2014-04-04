@@ -362,7 +362,7 @@ describe("public-api-scope", function (){
                     console.log('ascs.await cost:%d\n', ascs_cost);
 
                     console.log('normal result:', n);
-                    console.log(util.format('normal cost:%d\n\ndifference:%f ms\n----------------\n', normal_cost, (ascs_cost-normal_cost)/1000));
+                    console.log(util.format('normal cost:%d\n\ndifference:%d ms\n----------------\n', normal_cost, (ascs_cost-normal_cost)/1000));
 
                     // we allow a little bit extra-time for using ascs.await [ time unit:ms - convert -> s ]
                     chai.expect((ascs_cost - normal_cost)/1000).to.be.below(0.005);
