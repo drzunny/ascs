@@ -2,7 +2,7 @@
 - - -
 ascs means `AS CSharp`. I hope the asynchronous programming can be more intuitionistic, C#'s async/await pattern is a good choice for me to solve the **Callback Hell** in Node.JS.
 
-So far, ascs is still a very lightweight library (LOC < 300). There are only **3** public API:
+So far, ascs is still a very lightweight library (LOC < 150). There are only **3** public API:
 
 ```
 	ascs.env(function () { ... });
