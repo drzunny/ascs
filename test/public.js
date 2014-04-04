@@ -10,7 +10,7 @@
 =============================================================================*/
 
 var ascs    = require("../ascs");
-// var mocha   = require("mocha");
+var util    = require("util");
 var chai    = require("chai");
 
 var assert = chai.assert;
@@ -314,21 +314,24 @@ describe("public-api-scope", function (){
         it("the time-cost between the normal asynchronous callback and ascs.await model", function (done) {
         		// get fibonacci
         		function fib(n)	{
+                    var sum;
         			var source = [1, 1];
         			if (n <= 1)
-        				return source[i];
+        				return { 'a' : source[i], 's': 2 };
+                    sum = 2;
         			for (var i = 2; i <= n; i++)	{
         				var next = source[i-2] + source[i-1];
+                        sum += next;
         				source.push(next);
         			}
-        			return source[source.length-1];
+        			return { 'a':source[source.length-1], 's':sum};
         		}
         		// Test function
-        		function millionFib(cb)	{        			
-        			var r = fib(30);
+        		function millionFib(cb)	{
+                    var r = fib(300);
         			setTimeout(function () {
         				cb(r);
-        			}, 5);        			
+        			}, 500);        			
         		};
 
         		/*
@@ -342,31 +345,31 @@ describe("public-api-scope", function (){
         				fib(10); // you can do other things for here because the callback is async
         		 */
         		ascs.env(function () {
-	        		var ascs_begin = Date.parse(new Date());
-	        		console.log(ascs_begin);
+	        		var ascs_begin = new Date().getTime();
 	        		var millionFib_async = ascs.make(millionFib);
 
-	        		fib(10); 										// the millionfib_async is asynchronous too!
+	        		fib(100); 										// the millionfib_async is asynchronous too!
 	        		var result1 = ascs.await(millionFib_async());	// waiting for callback
-	        		console.log(Date.parse(new Date()));
-	        		var ascs_cost = Date.parse(new Date()) - ascs_begin;
-	        		console.log(result1, ascs_cost);
+	        		var ascs_cost = new Date().getTime() - ascs_begin;
 
 	        		// normal async callback style
-	        		var normal_begin = Date.parse(new Date());
-	        		console.log(normal_begin);
+	        		var normal_begin = new Date().getTime();
 	        		millionFib(function (n) {
-	        			console.log(Date.parse(new Date()));
-	        			var normal_cost = Date.parse(new Date()) - normal_begin;
-	        			console.log(n, normal_cost);
-						console.log('\nascs.await cost:%d\nnormal callback cost:%d\n', ascs_cost, normal_cost);
+	        			var normal_cost = new Date().getTime() - normal_begin;
 
-	        			// we allow a little bit extra-time for using ascs.await
-	        			chai.expect(ascs_cost - normal_cost).to.be.below(0.005);
+                        // output the statisic
+                        console.log('\n-----------------\nascs.await result:', result1);
+                        console.log('ascs.await cost:%d\n', ascs_cost);
+
+                        console.log('normal result:', n);
+                        console.log(util.format('normal cost:%d\n\ndifference:%f ms\n----------------\n', normal_cost, (ascs_cost-normal_cost)/1000));
+
+	        			// we allow a little bit extra-time for using ascs.await [ time unit:ms - convert -> s ]
+	        			chai.expect((ascs_cost - normal_cost)/1000).to.be.below(0.005);
 	        			// finish this asynchronous callback test
 	        			done();
 	        		});
-	        		fib(10);	// the millionfib is async. test for equal condition
+	        		fib(100);	// the millionfib is async. test for equal condition
         		})();
         		
         });
