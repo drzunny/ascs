@@ -27,46 +27,46 @@ function is_functor (obj)	{
 /*--------------------- test cases ----------------------------*/
 
 describe("public-api-scope", function (){
-	describe("ascs.env", function ()	{
-		var testEnv1 = function () {		
-		};
-		var testEnv2 = function () {		
-			return 1;
-		};
-		var testEnv3 = function (a) {		
-			return a;
-		};
-		var testEnv4 = function (a,b,c,d) {
-			return a+b+c+d;
-		};
-		var testEnv5 = function (a,b,cb) {
-			return cb(a+b);
-		};
-		var testEnv6 = undefined;
-		var testEnv7 = [];
-		var testEnv8 = "";
-		var testEnv9 = {};
-		var testEnv0 = null;
+    describe("ascs.env", function ()	{
+        var testEnv1 = function () {		
+        };
+        var testEnv2 = function () {		
+            return 1;
+        };
+        var testEnv3 = function (a) {		
+            return a;
+        };
+        var testEnv4 = function (a,b,c,d) {
+            return a+b+c+d;
+        };
+        var testEnv5 = function (a,b,cb) {
+            return cb(a+b);
+        };
+        var testEnv6 = undefined;
+        var testEnv7 = [];
+        var testEnv8 = "";
+        var testEnv9 = {};
+        var testEnv0 = null;
 
-		it("should different type of function can be convert to env function", function () {
-			assert.isFunction(ascs.env(testEnv1), 'convert a non-return function to env-function');
-			assert.isFunction(ascs.env(testEnv2), 'convert a return function to env-function')
-			assert.isFunction(ascs.env(testEnv3), 'convert a one-arg function to env-function');
-			assert.isFunction(ascs.env(testEnv4), 'convert a multi-arg function to env-function');
-			assert.isFunction(ascs.env(testEnv5), 'convert a muti-arg-with-cb function to env-function');
-		});
+        it("should different type of function can be convert to env function", function () {
+            assert.isFunction(ascs.env(testEnv1), 'convert a non-return function to env-function');
+            assert.isFunction(ascs.env(testEnv2), 'convert a return function to env-function');
+            assert.isFunction(ascs.env(testEnv3), 'convert a one-arg function to env-function');
+            assert.isFunction(ascs.env(testEnv4), 'convert a multi-arg function to env-function');
+            assert.isFunction(ascs.env(testEnv5), 'convert a muti-arg-with-cb function to env-function');
+        });
 
-		it("other type of variant also can be converted to a empty function", function () {
-			assert.isFunction(ascs.env(testEnv6), 'undefined variant can be convert to a empty function');
-			assert.isFunction(ascs.env(testEnv7), 'convert a return function to env-function');
-			assert.isFunction(ascs.env(testEnv8), 'convert a return function to env-function');
-			assert.isFunction(ascs.env(testEnv9), 'convert a return function to env-function');
-			assert.isFunction(ascs.env(testEnv0), 'convert a return function to env-function');
-		});		
-	});
+        it("other type of variant also can be converted to a empty function", function () {
+            assert.isFunction(ascs.env(testEnv6), 'undefined variant can be convert to a empty function');
+            assert.isFunction(ascs.env(testEnv7), 'convert a return function to env-function');
+            assert.isFunction(ascs.env(testEnv8), 'convert a return function to env-function');
+            assert.isFunction(ascs.env(testEnv9), 'convert a return function to env-function');
+            assert.isFunction(ascs.env(testEnv0), 'convert a return function to env-function');
+        });		
+    });
 
-	describe("ascs.make", function ()	{
-        
+    describe("ascs.make", function ()	{
+
         var func = require('../lib/ascs-functor');
         var fs = require('fs');
 
@@ -94,7 +94,7 @@ describe("public-api-scope", function (){
             }, 2000);
             //console.log('Goodbye,', path);
         };
-        
+
         /*------------- convert to ascs.func ------------------*/
         var fun2Obj = new fun2('Shit');
         var fsExists_async = ascs.make(fs.exists);
@@ -103,7 +103,7 @@ describe("public-api-scope", function (){
         var fun2_s_goodmorning_async = ascs.make(fun2.GoodMorning);
         var fun2_m_exists_async = ascs.make(fun2Obj.exists);
 
-		it("the functions can be converted to a ascs.func Object", function () {
+        it("the functions can be converted to a ascs.func Object", function () {
             assert.isFunction(fsExists_async, "ascs can convert standard library's async api");
             assert.isFunction(fun1_async, "ascs can convert the customer's async function");
             assert.isFunction(fun2_async, "ascs can convert the constructor function");
@@ -122,9 +122,9 @@ describe("public-api-scope", function (){
             is_functor(t3);
             is_functor(t4);
             is_functor(t5);
-		});
+        });
 
-		it("the non-function should return null", function () {
+        it("the non-function should return null", function () {
             assert.isNull( ascs.make(undefined), "cannot parse the undefined variant");
             assert.isNull( ascs.make(null), "cannot parse the null variant");
             assert.isNull( ascs.make(NaN), "the NaN cannot be parsed");
@@ -133,9 +133,9 @@ describe("public-api-scope", function (){
             assert.isNull( ascs.make(100), "the number cannot be parsed");
             assert.isNull( ascs.make([1,2,3,4,5]), "the array cannot be parsed");
             assert.isNull( ascs.make({ a : 'abc', b:123 }), "the object cannot be parsed");
-		});
+        });
 
-		it("the asc.func object should return itself", function () {
+        it("the asc.func object should return itself", function () {
 
             var f1 = fsExists_async("1.txt");
             var f2 = fun1_async("2.txt");
@@ -148,10 +148,10 @@ describe("public-api-scope", function (){
             assert.equal( ascs.make(f3), f3, "the f3 make nothing different");
             assert.equal( ascs.make(f4), f4, "the f4 make nothing different");
             assert.equal( ascs.make(f5), f5, "the f5 make nothing different");
-		});
-	});
+        });
+    });
 
-	describe("ascs.await", function ()	{
+    describe("ascs.await", function ()	{
 
         // ---------- Prepare the test functions -------------------
         var fs = require("fs");
@@ -180,10 +180,10 @@ describe("public-api-scope", function (){
         };
 
         var fun5 = "This is not a function";
-        
+
         // ---------- Convert the normal asynchronous function to ascs.func ---------------
         var F = new fun();
-        
+
         var async_f0 = ascs.make(fs.exists);
         var async_f1 = ascs.make(fun1);
         var async_f2 = ascs.make(fun2);
@@ -191,7 +191,7 @@ describe("public-api-scope", function (){
         var async_f4 = ascs.make(fun.fun4);
         var async_f5 = ascs.make(fun5);
 
-		it("the await operation can block the env-function", function () {
+        it("the await operation can block the env-function", function () {
             assert.isNull(async_f5, "Test the `null` variant againt, the non-function object cannot be parsed");
 
             var check_flag = 0;
@@ -237,9 +237,9 @@ describe("public-api-scope", function (){
             })();
             assert.equal(check_flag, 30000, "this step 5, the check flag must be 30000 if the await has block the process<jump out the env>");
 
-		});
+        });
 
-		it("after await, all the result are returned successfuly", function (done) {    // use mocha's asynchronous supported
+        it("after await, all the result are returned successfuly", function (done) {    // use mocha's asynchronous supported
             ascs.env(function () {
                 var result = [];
                 var t1 = async_f0('1.txt');
@@ -257,11 +257,11 @@ describe("public-api-scope", function (){
                 for (var i = 0; i < 5; i++) {
                     assert.isNotNull(result[i], "the task " + i + " must be returned successfuly");
                 }
-                done();     // end of this test case
+            done();     // end of this test case
             })();
-		});
+        });
 
-		it("if no await operation, the env-function will be execute asynchronous", function () {
+        it("if no await operation, the env-function will be execute asynchronous", function () {
             var flag = [];
             var i = 1;
             ascs.env(function() {
@@ -309,70 +309,68 @@ describe("public-api-scope", function (){
                 flag.push(i++);
             })();
             chai.expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]);
-		});
-
-        it("the time-cost between the normal asynchronous callback and ascs.await model", function (done) {
-        		// get fibonacci
-        		function fib(n)	{
-                    var sum;
-        			var source = [1, 1];
-        			if (n <= 1)
-        				return { 'a' : source[i], 's': 2 };
-                    sum = 2;
-        			for (var i = 2; i <= n; i++)	{
-        				var next = source[i-2] + source[i-1];
-                        sum += next;
-        				source.push(next);
-        			}
-        			return { 'a':source[source.length-1], 's':sum};
-        		}
-        		// Test function
-        		function millionFib(cb)	{
-                    var r = fib(300);
-        			setTimeout(function () {
-        				cb(r);
-        			}, 500);        			
-        		};
-
-        		/*
-        			--- if the normal asynchronous callback pattern. the test will be:
-
-						t1 = get_here();
-        				millionFib(function (n) {
-							t2 = get_here();
-							// output
-        				});
-        				fib(10); // you can do other things for here because the callback is async
-        		 */
-        		ascs.env(function () {
-	        		var ascs_begin = new Date().getTime();
-	        		var millionFib_async = ascs.make(millionFib);
-
-	        		fib(100); 										// the millionfib_async is asynchronous too!
-	        		var result1 = ascs.await(millionFib_async());	// waiting for callback
-	        		var ascs_cost = new Date().getTime() - ascs_begin;
-
-	        		// normal async callback style
-	        		var normal_begin = new Date().getTime();
-	        		millionFib(function (n) {
-	        			var normal_cost = new Date().getTime() - normal_begin;
-
-                        // output the statisic
-                        console.log('\n-----------------\nascs.await result:', result1);
-                        console.log('ascs.await cost:%d\n', ascs_cost);
-
-                        console.log('normal result:', n);
-                        console.log(util.format('normal cost:%d\n\ndifference:%f ms\n----------------\n', normal_cost, (ascs_cost-normal_cost)/1000));
-
-	        			// we allow a little bit extra-time for using ascs.await [ time unit:ms - convert -> s ]
-	        			chai.expect((ascs_cost - normal_cost)/1000).to.be.below(0.005);
-	        			// finish this asynchronous callback test
-	        			done();
-	        		});
-	        		fib(100);	// the millionfib is async. test for equal condition
-        		})();
-        		
         });
 
-	});
+        it("the time-cost between the normal asynchronous callback and ascs.await model", function (done) {
+            // get fibonacci
+            function fib(n)	{
+                var sum;
+                var source = [1, 1];
+                if (n <= 1)
+            return { 'a' : source[i], 's': 2 };
+        sum = 2;
+        for (var i = 2; i <= n; i++)	{
+            var next = source[i-2] + source[i-1];
+            sum += next;
+            source.push(next);
+        }
+        return { 'a':source[source.length-1], 's':sum};
+            }
+            // Test function
+            function millionFib(cb)	{
+                var r = fib(300);
+                setTimeout(function () {
+                    cb(r);
+                }, 500);        			
+            };
+
+            /*
+               --- if the normal asynchronous callback pattern. the test will be:
+
+                t1 = get_here();
+                    millionFib(function (n) {
+                    t2 = get_here();
+                    // output
+                });
+                fib(10); // you can do other things for here because the callback is async
+            */
+            ascs.env(function () {
+                var ascs_begin = new Date().getTime();
+                var millionFib_async = ascs.make(millionFib);
+
+                fib(100); 										// the millionfib_async is asynchronous too!
+                var result1 = ascs.await(millionFib_async());	// waiting for callback
+                var ascs_cost = new Date().getTime() - ascs_begin;
+
+                // normal async callback style
+                var normal_begin = new Date().getTime();
+                millionFib(function (n) {
+                    var normal_cost = new Date().getTime() - normal_begin;
+
+                    // output the statisic
+                    console.log('\n-----------------\nascs.await result:', result1);
+                    console.log('ascs.await cost:%d\n', ascs_cost);
+
+                    console.log('normal result:', n);
+                    console.log(util.format('normal cost:%d\n\ndifference:%f ms\n----------------\n', normal_cost, (ascs_cost-normal_cost)/1000));
+
+                    // we allow a little bit extra-time for using ascs.await [ time unit:ms - convert -> s ]
+                    chai.expect((ascs_cost - normal_cost)/1000).to.be.below(0.005);
+                    // finish this asynchronous callback test
+                    done();
+                });
+                fib(100);	// the millionfib is async. test for equal condition
+            })();
+        });
+    });
 })
