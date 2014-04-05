@@ -357,17 +357,16 @@ describe("public-api-scope", function (){
                 millionFib(function (n) {
                     var normal_cost = new Date().getTime() - normal_begin;
 
-                    // output the statisic
-                    console.log('\n-----------------\nascs.await result:', result1);
-                    console.log('ascs.await cost:%d\n', ascs_cost);
-
-                    console.log('normal result:', n);
-                    console.log(util.format('normal cost:%d\n\ndifference:%d ms\n----------------\n', normal_cost, (ascs_cost-normal_cost)/1000));
-
                     // we allow a little bit extra-time for using ascs.await [ time unit:ms - convert -> s ]
                     chai.expect((ascs_cost - normal_cost)/1000).to.be.below(0.005);
                     // finish this asynchronous callback test
                     done();
+
+                    // output the statisic after done
+                    console.log('\n-----------------\nascs.await result:', result1);
+                    console.log('ascs.await cost:%d\n', ascs_cost);
+                    console.log('normal result:', n);
+                    console.log(util.format('normal cost:%d\n\ndifference:%d ms\n----------------\n', normal_cost, (ascs_cost-normal_cost)/1000));
                 });
                 fib(100);	// the millionfib is async. test for equal condition
             })();
