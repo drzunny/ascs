@@ -1,6 +1,8 @@
 # Hi, this is ascs
 - - -
-ascs means `AS CSharp`. I hope the asynchronous programming can be more intuitionistic, C#'s async/await pattern is a good choice for me to solve the **Callback Hell** in Node.JS.
+**ascs ==> as cs ==> `AS CSharp`.**
+
+I hope the asynchronous programming can be more intuitionistic, C#'s async/await pattern is a good choice for me to solve the **Callback Hell** in Node.JS.
 
 So far, ascs is still a very lightweight library (LOC < 150). There are only **3** public API:
 
@@ -30,7 +32,7 @@ ascs.env(function() {
     console.log('current is:', i++);        // 0
     var task = myfun_async('Hello world');
     console.log('current is:', i++);        // 1
-    //task.await();
+    task.await();
     console.log('current is:', i++);        // 2
     console.log('The result is:', task.result);
     console.log('current is:', i++);        // 3
@@ -38,7 +40,20 @@ ascs.env(function() {
 
 ```
 
-if `task.await()` has been commented. the output is:
+run this code. the console will output these:
+```
+current is: 0
+Hello world start
+Hello world end
+current is: 1
+Function is done
+current is: 2
+The result is: { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 }
+current is: 3
+```
+The process will be waiting the task until it has finished
+
+Now, let's remove the `task.await()`. the output will become:
 ```
 current is: 0
 Hello world start
@@ -50,26 +65,13 @@ current is: 3
 Function is done
 ```
 
-The process will not be stopped. But if `task.await()` is called:
-
-```
-current is: 0
-Hello world start
-Hello world end
-current is: 1
-Function is done
-current is: 2
-The result is: { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 }
-current is: 3
-```
-
-The process will be waiting the task until it has finished;
+The process in `ascs.env` will not be stopped. but `myfun` is also run asynchronously.
 
 # Roadmap
 - - -
-0. Support timeout;
-1. Add Test
-2. Better Supports for object's context
+0. Support timeout   *(at 0.2.0)*
+1. <s>Add Test</s> **(DONE)**
+2. Better Supports for object's context   *(at 0.2.0)* 
 3. Exception
 4. Debug
 5. Remove the ascs.env (?)

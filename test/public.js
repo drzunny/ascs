@@ -75,7 +75,7 @@ describe("public-api-scope", function (){
             //console.log('start fun1');
             setTimeout(function () {
                 cb([1,2,3,4,5,6,7]);
-            }, 3000);
+            }, 300);
             //console.log('end fun1');
         };
         var fun2 = function (path)  {
@@ -91,7 +91,7 @@ describe("public-api-scope", function (){
             //console.log('Hello world', path);
             setTimeout(function () {
                 cb('1',2,3.0);
-            }, 2000);
+            }, 200);
             //console.log('Goodbye,', path);
         };
 
