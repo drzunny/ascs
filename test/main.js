@@ -1,19 +1,19 @@
 /*=============================================================================
-#     FileName: public.js
-#         Desc: the Public API's(make, await, env) test
+#     FileName: main.js
+#         Desc: the Base API's(make, await, env) test
 #       Author: drzunny
 #        Email: drzunny@hotmail.com
 #     HomePage: http://drzlab.info
-#      Version: 0.1.0
-#   LastChange: 2014-04-03 13:58:33
+#      Version: 0.2.0
+#   LastChange: 2014-04-07 17:03:22
 #      History:
 =============================================================================*/
-
 var ascs    = require("../ascs");
 var util    = require("util");
 var chai    = require("chai");
 
 var assert = chai.assert;
+var expect = chai.expect;
 
 function is_functor (obj)	{
     assert.property(obj, 'result', 'check functor has `result` member');
@@ -26,7 +26,7 @@ function is_functor (obj)	{
 
 /*--------------------- test cases ----------------------------*/
 
-describe("public-api-scope", function (){
+describe("basic-api-scope", function (){
     describe("ascs.env", function ()	{
         var testEnv1 = function () {		
         };
@@ -271,7 +271,7 @@ describe("public-api-scope", function (){
                 flag.push(i++);
                 flag.push(i++);
             })();
-            chai.expect(flag).to.eql([1,2,3,4]);
+            expect(flag).to.eql([1,2,3,4]);
 
             ascs.env(function() {
                 flag.push(i++);
@@ -280,7 +280,7 @@ describe("public-api-scope", function (){
                 async_f1([1,2,3,4]);
                 flag.push(i++);
             })();
-            chai.expect(flag).to.eql([1,2,3,4,5,6,7,8]);
+            expect(flag).to.eql([1,2,3,4,5,6,7,8]);
 
             ascs.env(function() {
                 async_f2('ab', 'cd');
@@ -289,7 +289,7 @@ describe("public-api-scope", function (){
                 flag.push(i++);
                 flag.push(i++);
             })();
-            chai.expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12]);
+            expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12]);
 
             ascs.env(function() {
                 flag.push(i++);
@@ -298,7 +298,7 @@ describe("public-api-scope", function (){
                 flag.push(i++);
                 flag.push(i++);
             })();
-            chai.expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+            expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
 
             ascs.env(function() {
                 flag.push(i++);
@@ -308,7 +308,7 @@ describe("public-api-scope", function (){
                 async_f4();
                 flag.push(i++);
             })();
-            chai.expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]);
+            expect(flag).to.eql([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]);
         });
 
         it("the time-cost between the normal asynchronous callback and ascs.await model", function (done) {
@@ -358,7 +358,7 @@ describe("public-api-scope", function (){
                     var normal_cost = new Date().getTime() - normal_begin;
 
                     // we allow a little bit extra-time for using ascs.await [ time unit:ms - convert -> s ]
-                    chai.expect((ascs_cost - normal_cost)/1000).to.be.below(0.005);
+                    expect((ascs_cost - normal_cost)/1000).to.be.below(0.005);
                     // finish this asynchronous callback test
                     done();
 

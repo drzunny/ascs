@@ -1,11 +1,11 @@
 /*=============================================================================
-#     FileName: index.js
+#     FileName: ascs.js
 #         Desc: The module entry
 #       Author: drzunny
 #        Email: drzunny@hotmail.com
 #     HomePage: http://drzlab.info
-#      Version: 0.1.0
-#   LastChange: 2014-04-01 10:23:22
+#      Version: 0.2.0
+#   LastChange: 2014-04-07 16:51:18
 #      History:
 =============================================================================*/
 var core = require('./lib/ascs-core');
