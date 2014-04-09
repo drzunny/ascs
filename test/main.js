@@ -80,8 +80,6 @@ describe("basic-api-scope", function (){
         };
         var fun2 = function (path)  {
             var _path = path;
-            this.x = 1;
-            this.y = 2;
 
             this.exists = function (cb) {
                 fs.exists(path, cb);
