@@ -4,7 +4,7 @@
   "description": "provide the async/await like C# 4.5",
   "main": "ascs.js",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec --timeout 15000"
   },
   "keywords": [
     "async",
