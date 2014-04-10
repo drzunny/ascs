@@ -74,7 +74,7 @@ describe("timeout-context-scope", function () {
         })();
     });
 
-    it("context-changed, we have special skill to change your function owner", function (done) {
+    it("context-changed, changed the function's binding object", function (done) {
             //  Prepare the basic function
             //--------------------------------------------------
             var x = 'outside 1', y = 'outside 2';

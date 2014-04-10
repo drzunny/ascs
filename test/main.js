@@ -360,10 +360,10 @@ describe("basic-api-scope", function (){
                     done();
 
                     // output the statisic after done
-                    console.log('\n-----------------\nascs.await result:', result1);
-                    console.log('ascs.await cost:%d\n', ascs_cost);
-                    console.log('normal result:', n);
-                    console.log(util.format('normal cost:%d\n\ndifference:%d ms\n----------------\n', normal_cost, (ascs_cost-normal_cost)/1000));
+                    // console.log('\n-----------------\nascs.await result:', result1);
+                    console.log('\nascs.await cost:%d', ascs_cost);
+                    // console.log('normal result:', n);
+                    console.log(util.format('normal cost:%d\n\ndifference:%d ms\n', normal_cost, (ascs_cost-normal_cost)/1000));
                 });
                 fib(100);	// the millionfib is async. test for equal condition
             })();
