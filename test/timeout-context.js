@@ -94,13 +94,17 @@ describe("timeout-context-scope", function () {
             };
             var obj2 = function ()  {
                 this.x = 100;
-                this.y = 200;
-                var _x = this.x, _y = this.y;
+                this.y = 200;                
+                var __x = this.x, __y = this.y;
                 this.fun3 = function (cb)   {
+                    var _x = this.x, _y = this.y;
                     setTimeout(function () { cb(_x, _y); }, 50);
                 };
+                this.fun4 = function (cb)   {
+                    setTimeout(function () { cb(__x, __y); }, 50);                    
+                };
             };
-            obj2.fun4 = function (cb)   {
+            obj2.fun5 = function (cb)   {
                 var _x = this.x, _y = this.y;
                 setTimeout(function () { cb(_x, _y); }, 50);
             };
@@ -109,35 +113,46 @@ describe("timeout-context-scope", function () {
             //  start the test
             //--------------------------------------------------
             ascs.env(function() {
-                var f1 = ascs.make(fun1);
-                var f2 = ascs.make(obj1.fun2);
-                var f3 = ascs.make(instance.fun3);
-                var f4 = ascs.make(obj2.fun4);
+                // 
+                var nf1 = ascs.make(fun1);
+                var nf2 = ascs.make(obj1.fun2);
+                var nf3 = ascs.make(instance.fun3);
+                var nf4 = ascs.make(instance.fun4);
+                var nf5 = ascs.make(obj2.fun5);
                 //---------------------------
-                var rs1 = ascs.await(f1());
-                var rs2 = ascs.await(f2());
-                var rs3 = ascs.await(f3());
-                var rs4 = ascs.await(f4());
+                var rs1 = ascs.await(nf1());
+                var rs2 = ascs.await(nf2());
+                var rs3 = ascs.await(nf3());
+                var rs4 = ascs.await(nf4());
+                var rs5 = ascs.await(nf5());
 
                 assert.isUndefined(rs1[0], "f1's return must be undefined because its scope doest set");
                 assert.isUndefined(rs2[0], "f2's return must be undefined because its scope doest set");
-                assert.equal(rs3[0], 100, "because of the constructor has been set the '_x', so _x is not equal to the `this variant`");
-                assert.isUndefined(rs4[0], "f4's return must be undefined because its scope doest set");
+                assert.isUndefined(rs3[0], "f3's return must be undefined, cannot catche the this in the member method");
+                assert.equal(rs4[0], 100, "f4's is equal to 100, __x has been assigned in constructor");
+                assert.isUndefined(rs5[0], "f5's is undefined, because there are no member property about fun")
 
                 /*---------- reset the owner -----------------*/
-                var f1_owner = ascs.make(fun1, self);
-                var f2_owner = ascs.make(obj1.fun2, obj1);
-                var f3_owner = ascs.make(instance.fun3, self);
-                var f4_owner = ascs.make(obj2.fun4, self);
+                var f1 = ascs.make(fun1, self);
+                var f2 = ascs.make(obj1.fun2, obj1);
+                var f2_ = ascs.make(obj1.fun2, self);
+                var f3 = ascs.make(instance.fun3, self);
+                var f4 = ascs.make(instance.fun4, self);
+                var f5 = ascs.make(obj2.fun5, instance);
                 //---------------------------
-                var rs1_owner = ascs.await(f1_owner());
-                var rs2_owner = ascs.await(f2_owner());
-                var rs3_owner = ascs.await(f3_owner());
-                var rs4_owner = ascs.await(f4_owner());
+                var rs1_owner = ascs.await(f1());
+                var rs2_owner = ascs.await(f2());
+                var rs2_owner_ = ascs.await(f2_());
+                var rs3_owner = ascs.await(f3());
+                var rs4_owner = ascs.await(f4());
+                var rs5_owner = ascs.await(f5());
 
-                assert.equal(rs1_owner[0], "outside 1", "f1_owner's scope is equal to `self`");
+                assert.equal(rs1_owner[0], "outside 1", "fun1 has binded to the object 'self'");
                 assert.equal(rs2_owner[0], -1, "f2_owner has bind to obj1, so the result is -1");
-                assert.equal(rs4_owner[0], "outside 1", "f4_owner's scope is equal to `self`");
+                assert.notEqual(rs2_owner_[0], -1, "f2_owner_ is not equal to -1, becuase it has rebind to `self`");
+                assert.equal(rs3_owner[0], "outside 1", "f3_owner has rebind to `self`, so the result is 'outside 1'");
+                assert.equal(rs4_owner[0], 100, "although f4 is rebind to `self`, but the contructor has been set __x");
+                assert.equal(rs5_owner[0], 100, "f5_owner has bind to instance, so the result is 100");
 
                 done();
             })();

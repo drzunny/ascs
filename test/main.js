@@ -19,9 +19,8 @@ function is_functor (obj)	{
     assert.property(obj, 'result', 'check functor has `result` member');
     assert.property(obj, 'await', 'check functor has `await` member');
     assert.isDefined(obj.__base__, "check functor has `__base___` property, it means it's a ascs.func");
-    assert.property(obj.__base__, 'owner', 'check its parent has `owner` property or not');
-    assert.property(obj.__base__, 'func', 'check its parent has `func` property or not');
-    assert.isFunction(obj.__base__.func, "if the __base__ member has `func`, it must be a function");
+    assert.property(obj.__base__, '__func', 'check its parent has `func` property or not');
+    assert.isFunction(obj.__base__.__func, "if the __base__ member has `func`, it must be a function");
 };
 
 /*--------------------- test cases ----------------------------*/
