@@ -47,11 +47,11 @@ describe("timeout-context-scope", function () {
             //  Start the mocha test
             //--------------------------------------------------
             var f = new fun();
-            var fun1_async = ascs.make(fun1);
-            var fun2_async = ascs.make(fun2);
-            var fun3_async = ascs.make(f.fun3);
-            var fun4_async = ascs.make(fun.fun4);
-            var fun5_async = ascs.make(fun5);
+            var fun1_async = ascs.conv(fun1);
+            var fun2_async = ascs.conv(fun2);
+            var fun3_async = ascs.conv(f.fun3);
+            var fun4_async = ascs.conv(fun.fun4);
+            var fun5_async = ascs.conv(fun5);
 
             // Start the test
             var t1 = fun1_async('1.txt');
@@ -114,11 +114,11 @@ describe("timeout-context-scope", function () {
             //--------------------------------------------------
             ascs.env(function() {
                 // 
-                var nf1 = ascs.make(fun1);
-                var nf2 = ascs.make(obj1.fun2);
-                var nf3 = ascs.make(instance.fun3);
-                var nf4 = ascs.make(instance.fun4);
-                var nf5 = ascs.make(obj2.fun5);
+                var nf1 = ascs.conv(fun1);
+                var nf2 = ascs.conv(obj1.fun2);
+                var nf3 = ascs.conv(instance.fun3);
+                var nf4 = ascs.conv(instance.fun4);
+                var nf5 = ascs.conv(obj2.fun5);
                 //---------------------------
                 var rs1 = ascs.await(nf1());
                 var rs2 = ascs.await(nf2());
@@ -133,12 +133,12 @@ describe("timeout-context-scope", function () {
                 assert.isUndefined(rs5[0], "f5's is undefined, because there are no member property about fun")
 
                 /*---------- reset the owner -----------------*/
-                var f1 = ascs.make(fun1, self);
-                var f2 = ascs.make(obj1.fun2, obj1);
-                var f2_ = ascs.make(obj1.fun2, self);
-                var f3 = ascs.make(instance.fun3, self);
-                var f4 = ascs.make(instance.fun4, self);
-                var f5 = ascs.make(obj2.fun5, instance);
+                var f1 = ascs.conv(fun1, self);
+                var f2 = ascs.conv(obj1.fun2, obj1);
+                var f2_ = ascs.conv(obj1.fun2, self);
+                var f3 = ascs.conv(instance.fun3, self);
+                var f4 = ascs.conv(instance.fun4, self);
+                var f5 = ascs.conv(obj2.fun5, instance);
                 //---------------------------
                 var rs1_owner = ascs.await(f1());
                 var rs2_owner = ascs.await(f2());

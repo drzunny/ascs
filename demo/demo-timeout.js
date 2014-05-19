@@ -11,7 +11,7 @@ function myfun (tips, cb)  {
 
 ascs.env(function() {
     var i = 0;
-    var myfun_async = ascs.make(myfun);
+    var myfun_async = ascs.conv(myfun);
     console.log('current is:', i++);        // 0
     var task = myfun_async('Hello world');
     console.log('current is:', i++);        // 1

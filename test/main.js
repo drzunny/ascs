@@ -64,7 +64,7 @@ describe("basic-api-scope", function (){
         });		
     });
 
-    describe("ascs.make", function ()	{
+    describe("ascs.conv", function ()	{
 
         var func = require('../lib/ascs-functor');
         var fs = require('fs');
@@ -94,11 +94,11 @@ describe("basic-api-scope", function (){
 
         /*------------- convert to ascs.func ------------------*/
         var fun2Obj = new fun2('Shit');
-        var fsExists_async = ascs.make(fs.exists);
-        var fun1_async = ascs.make(fun1);
-        var fun2_async = ascs.make(fun2);
-        var fun2_s_goodmorning_async = ascs.make(fun2.GoodMorning);
-        var fun2_m_exists_async = ascs.make(fun2Obj.exists);
+        var fsExists_async = ascs.conv(fs.exists);
+        var fun1_async = ascs.conv(fun1);
+        var fun2_async = ascs.conv(fun2);
+        var fun2_s_goodmorning_async = ascs.conv(fun2.GoodMorning);
+        var fun2_m_exists_async = ascs.conv(fun2Obj.exists);
 
         it("the functions can be converted to a ascs.func Object", function () {
             assert.isFunction(fsExists_async, "ascs can convert standard library's async api");
@@ -122,14 +122,14 @@ describe("basic-api-scope", function (){
         });
 
         it("the non-function should return null", function () {
-            assert.isNull( ascs.make(undefined), "cannot parse the undefined variant");
-            assert.isNull( ascs.make(null), "cannot parse the null variant");
-            assert.isNull( ascs.make(NaN), "the NaN cannot be parsed");
-            assert.isNull( ascs.make(true), "the boolean cannot be parsed");
-            assert.isNull( ascs.make("100"), "the string cannot be parsed");
-            assert.isNull( ascs.make(100), "the number cannot be parsed");
-            assert.isNull( ascs.make([1,2,3,4,5]), "the array cannot be parsed");
-            assert.isNull( ascs.make({ a : 'abc', b:123 }), "the object cannot be parsed");
+            assert.isNull( ascs.conv(undefined), "cannot parse the undefined variant");
+            assert.isNull( ascs.conv(null), "cannot parse the null variant");
+            assert.isNull( ascs.conv(NaN), "the NaN cannot be parsed");
+            assert.isNull( ascs.conv(true), "the boolean cannot be parsed");
+            assert.isNull( ascs.conv("100"), "the string cannot be parsed");
+            assert.isNull( ascs.conv(100), "the number cannot be parsed");
+            assert.isNull( ascs.conv([1,2,3,4,5]), "the array cannot be parsed");
+            assert.isNull( ascs.conv({ a : 'abc', b:123 }), "the object cannot be parsed");
         });
 
         it("the asc.func object should return itself", function () {
@@ -140,11 +140,11 @@ describe("basic-api-scope", function (){
             var f4 = fun2_s_goodmorning_async("4.txt");
             var f5 = fun2_m_exists_async();
 
-            assert.equal( ascs.make(f1), f1, "the f1 make nothing different");
-            assert.equal( ascs.make(f2), f2, "the f2 make nothing different");
-            assert.equal( ascs.make(f3), f3, "the f3 make nothing different");
-            assert.equal( ascs.make(f4), f4, "the f4 make nothing different");
-            assert.equal( ascs.make(f5), f5, "the f5 make nothing different");
+            assert.equal( ascs.conv(f1), f1, "the f1 make nothing different");
+            assert.equal( ascs.conv(f2), f2, "the f2 make nothing different");
+            assert.equal( ascs.conv(f3), f3, "the f3 make nothing different");
+            assert.equal( ascs.conv(f4), f4, "the f4 make nothing different");
+            assert.equal( ascs.conv(f5), f5, "the f5 make nothing different");
         });
     });
 
@@ -181,12 +181,12 @@ describe("basic-api-scope", function (){
         // ---------- Convert the normal asynchronous function to ascs.func ---------------
         var F = new fun();
 
-        var async_f0 = ascs.make(fs.exists);
-        var async_f1 = ascs.make(fun1);
-        var async_f2 = ascs.make(fun2);
-        var async_f3 = ascs.make(F.fun3);
-        var async_f4 = ascs.make(fun.fun4);
-        var async_f5 = ascs.make(fun5);
+        var async_f0 = ascs.conv(fs.exists);
+        var async_f1 = ascs.conv(fun1);
+        var async_f2 = ascs.conv(fun2);
+        var async_f3 = ascs.conv(F.fun3);
+        var async_f4 = ascs.conv(fun.fun4);
+        var async_f5 = ascs.conv(fun5);
 
         it("the await operation can block the env-function", function () {
             assert.isNull(async_f5, "Test the `null` variant againt, the non-function object cannot be parsed");
@@ -343,7 +343,7 @@ describe("basic-api-scope", function (){
             */
             ascs.env(function () {
                 var ascs_begin = new Date().getTime();
-                var millionFib_async = ascs.make(millionFib);
+                var millionFib_async = ascs.conv(millionFib);
 
                 fib(100); 										// the millionfib_async is asynchronous too!
                 var result1 = ascs.await(millionFib_async());	// waiting for callback

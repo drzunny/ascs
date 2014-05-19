@@ -25,10 +25,10 @@ function jsClass (x, y) {
 ascs.env(function() {
     var o1 = new jsClass(1,2);
     var o2 = new jsClass(3,4);
-    o1.nf = ascs.make(o1.superfunc);
-    o2.nf = ascs.make(o2.superfunc);
-    o1.f = ascs.make(o1.superfunc, o1);
-    o2.f = ascs.make(o2.superfunc, o2);
+    o1.nf = ascs.conv(o1.superfunc);
+    o2.nf = ascs.conv(o2.superfunc);
+    o1.f = ascs.conv(o1.superfunc, o1);
+    o2.f = ascs.conv(o2.superfunc, o2);
     
     console.log("\n---------------------------------");
     console.log("no instance binding.....\n---------------------------------\n");

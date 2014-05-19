@@ -11,7 +11,7 @@ var myfun = function(tips, cb)  {
 
 ascs.env(function() {
     var i = 0;
-    var myfun_async = ascs.make(myfun);
+    var myfun_async = ascs.conv(myfun);
     console.log('current is:', i++);        // 0
     var task = myfun_async('Hello world');
     console.log('current is:', i++);        // 1
@@ -45,7 +45,7 @@ ascs.env(function() {
     var x = 100, y = 200;
     var man = new superman();
     var man2 = {x:200, y:300};
-    var fly_async = ascs.make(man.fly);
+    var fly_async = ascs.conv(man.fly);
     man2.fly = fly_async;                   // the fly_asnc function's parent will not be changed (always `man`)
     console.log('current is:', i++);        // 0
     var task = fly_async('Mr.Jobs');

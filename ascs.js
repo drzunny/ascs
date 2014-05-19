@@ -11,5 +11,5 @@
 var core = require('./lib/ascs-core');
 
 exports.env    = core.env;
-exports.make   = core.make;
+exports.conv   = core.conv;
 exports.await   = core.await;
