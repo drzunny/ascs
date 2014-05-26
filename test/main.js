@@ -66,7 +66,7 @@ describe("basic-api-scope", function (){
 
     describe("ascs.conv", function ()	{
 
-        var func = require('../lib/ascs-functor');
+        var func = require('../lib/ascs-process');
         var fs = require('fs');
 
         /*------------ the test functions ---------------*/

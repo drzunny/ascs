@@ -1,6 +1,6 @@
 {
   "name": "ascs",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "provide the async/await like C# 4.5",
   "main": "ascs.js",
   "scripts": {
