@@ -8,7 +8,7 @@ So far, ascs is still a very lightweight library (LOC < 150). There are only **3
 
 ```
 	ascs.env(function () { ... });
-	ascs.make(a_async_function);
+	ascs.conv(a_async_function);
 	<ascs_task>.await();
 ```
 
@@ -28,7 +28,7 @@ var myfun = function(tips, cb)  {
 
 ascs.env(function() {
     var i = 0;
-    var myfun_async = ascs.make(myfun);
+    var myfun_async = ascs.conv(myfun);
     console.log('current is:', i++);        // 0
     var task = myfun_async('Hello world');
     console.log('current is:', i++);        // 1
