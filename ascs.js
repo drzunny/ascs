@@ -5,11 +5,21 @@
 #        Email: drzunny@hotmail.com
 #     HomePage: http://drzlab.info
 #      Version: 0.2.0
-#   LastChange: 2014-04-07 16:51:18
+#   LastChange: 2015-06-19
 #      History:
 =============================================================================*/
-var core = require('./lib/ascs-core');
 
-exports.env    = core.env;
-exports.conv   = core.conv;
-exports.await   = core.await;
+var U = require('./lib/utility')
+var impl = null;
+
+if (U.enableGenerator())	{
+	impl = require('./lib/es6-impl');
+}	else	{
+	impl = require('./lib/fiber-impl');
+}
+
+exports.env = impl.env;
+exports.conv = impl.conv;
+exports.await = impl.await;
+
+exports.utility = U;

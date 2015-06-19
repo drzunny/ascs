@@ -15,11 +15,11 @@
   "author": "drzunny",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "fibers": "^1.0.1"
+    "fibers": "^1.0.5"
   },
   "devDependencies": {
-    "chai": "^1.9.1",
-    "mocha": "^1.18.2"
+    "chai": "*",
+    "mocha": "*"
   },
   "repository": {
     "type": "git",
