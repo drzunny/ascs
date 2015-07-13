@@ -69,14 +69,6 @@ The process in `ascs.env` will not be stopped. but `myfun` is also run asynchron
 
 # Roadmap
 - - -
-0. <s>Support timeout</s> **(DONE)**
-1. <s>Add Test</s> **(DONE)**
-2. <s>Better Supports for object's context</s> **(DONE)**
-3. Exception *(0.2.5)*
-4. Debug *(0.2.5)*
-5. Remove the ascs.env (?)
+1. Exception *(0.2.5)*
+2. Debug *(0.2.5)*
 
-
-## Bug and Issue
-- - -
-ascs is **UNFINISHED**. I think it is still a **TOY**, do not use in production...
