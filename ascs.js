@@ -10,13 +10,7 @@
 =============================================================================*/
 
 var U = require('./lib/utility')
-var impl = null;
-
-if (U.enableGenerator())	{
-	impl = require('./lib/es6-impl');
-}	else	{
-	impl = require('./lib/fiber-impl');
-}
+var impl = require('./lib/impl');;
 
 exports.env = impl.env;
 exports.conv = impl.conv;
