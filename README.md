@@ -18,7 +18,7 @@ Only **3** API in **ascs**:
 
 # Easy Demo
 - - -
-```
+```javascript
 var myfun = function(tips, cb)  {
     console.log(tips, 'start');
     setTimeout(function () {
