@@ -2,21 +2,23 @@
 - - -
 **ascs ==> as cs ==> `AS CSharp`.**
 
-I hope the asynchronous programming can be more intuitionistic, C#'s async/await pattern is a good choice for me to solve the **Callback Hell** in Node.JS.
+A small library provides the C# liked async/await style to Node.js/io.js.
 
-So far, ascs is still a very lightweight library (LOC < 150). There are only **3** public API:
+I'm maybe reinventing the wheel again. :smile:
 
-```
-	ascs.env(function () { ... });
-	ascs.conv(a_async_function);
-	<ascs_task>.await();
-```
+Just for fun and enjoy coding.
 
-# DEMO
+# Use
+
+Only **3** API in **ascs**:
+
++ **ascs.env**    Create a **async** environment to execute the process
++ **ascs.conv**   try to convert your callback style function to ASCSFunction (*your callback must be the last argument*)
++ **ascs.await**  a helper function. equal to: `ascs.await(f(1,2))` => `var t = f(1,2); t.await(); t.result`
+
+# Easy Demo
 - - -
 ```
-var ascs = require("./ascs");
-
 var myfun = function(tips, cb)  {
     console.log(tips, 'start');
     setTimeout(function () {
