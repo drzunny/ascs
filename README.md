@@ -71,6 +71,6 @@ The process in `ascs.env` will not be stopped. but `myfun` is also run asynchron
 
 # Roadmap
 - - -
-1. Exception *(0.2.5)*
-2. Debug *(0.2.5)*
+1. Exception *(0.3.0)*
+2. Debug *(0.3.0)*
 
