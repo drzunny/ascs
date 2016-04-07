@@ -1,3 +1,9 @@
+# DEPRECATED
+-------------------------
+You can use ES6's generator or ES7(by Babel)'s async/await.
+
+-------------------------
+
 # Hi, this is ascs
 - - -
 **ascs ==> as cs ==> `AS CSharp`.**
